@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     siteName: "Our Story",
     images: [
       {
-        url: "/og-image.png", // Đường dẫn file ảnh trong thư mục public/
+        url: "https://i.pinimg.com/736x/43/a4/62/43a462ff19b82db9da99caeef4e11e5a.jpg", // Đường dẫn file ảnh trong thư mục public/
         width: 1200,
         height: 630,
         alt: "Our Story Preview",
