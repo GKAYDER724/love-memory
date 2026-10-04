@@ -17,8 +17,37 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  // Bắt buộc khai báo domain của bạn để Next.js ghép thành URL tuyệt đối cho ảnh
+  metadataBase: new URL("https://love-memory-1234.vercel.app"),
+
   title: "Our Story — Kỷ niệm của chúng ta",
   description: "Một góc nhỏ lưu giữ những ngày tháng đẹp nhất của hai người.",
+
+  // Cấu hình xem trước link cho Facebook, Zalo, Discord,...
+  openGraph: {
+    title: "Our Story — Kỷ niệm của chúng ta",
+    description: "Một góc nhỏ lưu giữ những ngày tháng đẹp nhất của hai người.",
+    url: "https://love-memory-1234.vercel.app",
+    siteName: "Our Story",
+    images: [
+      {
+        url: "/og-image.png", // Đường dẫn file ảnh trong thư mục public/
+        width: 1200,
+        height: 630,
+        alt: "Our Story Preview",
+      },
+    ],
+    locale: "vi_VN",
+    type: "website",
+  },
+
+  // Cấu hình riêng cho Discord / Twitter card
+  twitter: {
+    card: "summary_large_image",
+    title: "Our Story — Kỷ niệm của chúng ta",
+    description: "Một góc nhỏ lưu giữ những ngày tháng đẹp nhất của hai người.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
