@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Couple {
+  id           String    @id @default(cuid())
+  slug         String    @unique @default("main")
+  person1Name  String
+  person2Name  String
+  startDate    DateTime
+  description  String?
+  coverImage   String?
+  heroTitle    String    @default("Kỷ niệm của chúng ta.")
+  heroSubtitle String    @default("Một nơi nhỏ để lưu giữ những ngày đã đi qua.")
+  quote        String    @default("Có những người bước vào cuộc đời mình rất nhẹ nhàng, nhưng lại để lại cả một câu chuyện.")
+  memories     Memory[]
+  photos       Photo[]
+  messages     Message[]
+  songs        Song[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Memory {
+  id          String   @id @default(cuid())
+  coupleId    String
+  couple      Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  title       String
+  content     String
+  memoryDate  DateTime
+  location    String?
+  coverImage  String?
+  photos      Photo[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([coupleId])
+  @@index([memoryDate])
+}
+
+model Photo {
+  id         String   @id @default(cuid())
+  coupleId   String
+  couple     Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  memoryId   String?
+  memory     Memory?  @relation(fields: [memoryId], references: [id], onDelete: SetNull)
+  url        String
+  publicId   String?
+  caption    String?
+  takenAt    DateTime?
+  createdAt  DateTime @default(now())
+  @@index([coupleId])
+  @@index([memoryId])
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  coupleId   String
+  couple     Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  author     String
+  content    String
+  createdAt  DateTime @default(now())
+  @@index([coupleId])
+}
+
+model Song {
+  id         String   @id @default(cuid())
+  coupleId   String
+  couple     Couple   @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  title      String
+  artist     String?
+  audioUrl   String
+  coverImage String?
+  createdAt  DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
